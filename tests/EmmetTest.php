@@ -58,7 +58,7 @@ class EmmetTest extends TestCase
             'div>header>div>p>span^^^+footer',
         ];
         yield [
-            '<div><header><div><p><b></b></p></div><div><p><b></b></p></div></header></div>',
+            '<div><header><div><p>content<b></b></p></div><div><p>content<b></b></p></div></header></div>',
             'div>header>div*2>p{content}>b',
         ];
         yield [

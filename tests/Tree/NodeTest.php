@@ -55,4 +55,34 @@ class NodeTest extends TestCase
 
         $this->assertEquals(3, $node->getMaxLevel());
     }
+
+    /**
+     * Test class and other modificators parsing
+     */
+    public function testModificatorsParsing()
+    {
+        $node = new Node('div.class1');
+        $this->assertEquals('class1', $node->getAttributes()['class']);
+
+        $node = new Node('div#id1');
+        $this->assertEquals('id1', $node->getAttributes()['id']);
+
+        $node = new Node('div{content}');
+        $this->assertEquals('content', $node->getContent());
+
+        $node = new Node('div[data-test=test2]');
+        $this->assertEquals('test2', $node->getAttributes()['data-test']);
+
+        $node = new Node('div.class1.class2#identifier{content}[data-test data-test2=test2]');
+
+        $this->assertEquals('content', $node->getContent());
+        $this->assertEquals('class1 class2', $node->getAttributes()['class']);
+        $this->assertEquals('identifier', $node->getAttributes()['id']);
+        $this->assertEquals(null, $node->getAttributes()['data-test']);
+        $this->assertEquals('test2', $node->getAttributes()['data-test2']);
+
+        // single class
+        $node = new Node('div.class1#identifier');
+        $this->assertEquals('class1', $node->getAttributes()['class']);
+    }
 }

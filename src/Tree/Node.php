@@ -52,10 +52,40 @@ final class Node
     public function __construct(string $abbreviation)
     {
         $this->abbreviation = $abbreviation;
-        preg_match('/^(.*?)[\*|\.|\#|\$|\{].*$/', $abbreviation, $nameMatches);
+        $modificators = '(\.|\*|\#|\{|\[|\z)';
+        preg_match("/^(.*?)$modificators.*$/", $abbreviation, $nameMatches);
         preg_match('/^.*?\{(.*?)\}.*$/', $abbreviation, $contentMatches);
         $this->name = $nameMatches === [] ? $abbreviation : $nameMatches[1];
         $this->content = $contentMatches === [] ? null : $contentMatches[1];
+
+        preg_match("/^.*?\.(.*?)(\*|\#|\{|\[|\z)/", $abbreviation, $classMatches);
+        if ($classMatches) {
+            if (false !== strpos($classesDesc = $classMatches[1], '.')) { // multiple classes
+                $classes = str_replace('.', ' ', $classesDesc);
+                $this->attributes['class'] = $classes;
+            } else {
+                $this->attributes['class'] = $classMatches[1];
+            }
+        }
+
+        preg_match("/^.*?\#(.*?)$modificators.*$/", $abbreviation, $idMatches);
+        if ($idMatches) {
+            $this->attributes['id'] = $idMatches[1];
+        }
+
+        preg_match("/^.*?\[(.*?)\].*$/", $abbreviation, $attrsMatches);
+        if ($attrsMatches) {
+            foreach (explode(' ', $attrsMatches[1]) as $attributeDescription) {
+                if (false !== strpos($attributeDescription, '=')) { // attribute has value
+                    list($attribute, $value) = explode('=', $attributeDescription);
+                    $value = trim($value, '"\'');
+                } else {
+                    list($attribute, $value) = [$attributeDescription, null];
+                }
+
+                $this->attributes[$attribute] = $value;
+            }
+        }
     }
 
     /**

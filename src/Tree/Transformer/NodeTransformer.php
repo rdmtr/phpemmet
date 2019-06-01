@@ -19,6 +19,11 @@ final class NodeTransformer implements TransformerInterface
     public function transform(Node $node, \DOMElement $element): \DOMElement
     {
         $transformedElement = $element->ownerDocument->createElement($node->getName());
+        $transformedElement->appendChild(new \DOMText($node->getContent()));
+        foreach ($node->getAttributes() as $attribute => $value) {
+            $transformedElement->setAttribute($attribute, $value);
+        }
+
         DOM::cloneChildNodes($element, $transformedElement);
 
         $element->parentNode->replaceChild($transformedElement, $element);

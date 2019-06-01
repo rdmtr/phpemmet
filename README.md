@@ -51,6 +51,6 @@ Used for chainable tree building. Defines child, parent and sibling elements rel
 
 ## Supported Modificators
 
-```.class#id{content}```
+```.class#id{content}[data-attr data-test=test]```
 
 Defines modification of current element: multiplication and elements descriptions (attributes, content etc.).
