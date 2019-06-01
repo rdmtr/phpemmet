@@ -2,18 +2,18 @@
 
 namespace PHPEmmet\Tree\Builder\Chainable;
 
-use PHPEmmet\Tree\Builder\BuilderInterface;
+use PHPEmmet\Tree\Builder\ChainableBuilderInterface;
 use PHPEmmet\Tree\Node;
 
 /**
- * Class ClimbUpHydrator
+ * Class ClimbUpBuilder
  */
-final class ClimbUpBuilder implements BuilderInterface
+final class ClimbUpBuilder implements ChainableBuilderInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function build(string $elementAbbreviation, Node $parent): Node
+    public function build(string $elementAbbreviation, ?Node $parent): Node
     {
         $levelUpsCount = $elementAbbreviation;
 

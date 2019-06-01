@@ -2,7 +2,12 @@
 
 namespace PHPEmmet;
 
-use PHPEmmet\Tree\Builder\BuilderInterface;
+use PHPEmmet\Abbreviation\GroupsParser;
+use PHPEmmet\Tree\Builder\Builder;
+use PHPEmmet\Tree\Builder\ChainableBuilder;
+use PHPEmmet\Tree\Builder\ChainableBuilderInterface;
+use PHPEmmet\Tree\Transformer\NodeTransformer;
+use PHPEmmet\Tree\Transformer\Transformer;
 use PHPEmmet\Tree\Transformer\TransformerInterface;
 
 /**
@@ -13,7 +18,7 @@ use PHPEmmet\Tree\Transformer\TransformerInterface;
 final class Emmet
 {
     /**
-     * @var BuilderInterface
+     * @var ChainableBuilderInterface
      */
     private $treeBuilder;
 
@@ -25,10 +30,10 @@ final class Emmet
     /**
      * Resolver constructor.
      *
-     * @param BuilderInterface     $builder
+     * @param Builder              $builder
      * @param TransformerInterface $transformer
      */
-    public function __construct(BuilderInterface $builder, TransformerInterface $transformer)
+    public function __construct(Builder $builder, TransformerInterface $transformer)
     {
         $this->treeBuilder = $builder;
         $this->transformer = $transformer;
@@ -42,7 +47,7 @@ final class Emmet
      */
     public function make(string $abbreviation, \DOMElement $parentElement = null): \DOMDocument
     {
-        $rootNode = $this->treeBuilder->build($abbreviation, null);
+        $rootNode = $this->treeBuilder->build($abbreviation);
         $wrappedElement = $this->transformer->transform($rootNode, $parentElement ?? DOM::emptyElement());
 
         if (null === $parentElement) {
@@ -55,5 +60,16 @@ final class Emmet
         }
 
         return $document;
+    }
+
+    /**
+     * @return Emmet
+     */
+    public static function new(): self
+    {
+        return new self(
+            new Builder(new GroupsParser(), ChainableBuilder::default()),
+            new Transformer(new NodeTransformer())
+        );
     }
 }

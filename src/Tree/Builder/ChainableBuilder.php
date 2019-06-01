@@ -12,10 +12,10 @@ use PHPEmmet\Tree\Node;
 /**
  * Class ChainableBuilder.
  */
-final class ChainableBuilder implements BuilderInterface
+final class ChainableBuilder implements ChainableBuilderInterface
 {
     /**
-     * @var array|BuilderInterface[]
+     * @var array|ChainableBuilderInterface[]
      */
     private $builders;
 
@@ -58,14 +58,9 @@ final class ChainableBuilder implements BuilderInterface
     /**
      * {@inheritDoc}
      */
-    public function build(string $abbreviation, Node $parent = null): Node
+    public function build(string $abbreviation, ?Node $parent): Node
     {
-        if (null === $parent) { // todo $parent = null needed only for initialization (разбить на 2 метода)
-            $firstNode = new Node($this->parser->shift($abbreviation));
-            $this->tree = Node::parent();
-            $this->tree->appendChild($firstNode);
-            $parent = $firstNode;
-        }
+        $parent = $parent ?? $this->initializeParent($abbreviation);
 
         $aggregator = $this->parser->shiftChar($abbreviation);
         $elementAbbreviation = $this->parser->shift($abbreviation);
@@ -80,11 +75,25 @@ final class ChainableBuilder implements BuilderInterface
     }
 
     /**
+     * @param string $abbreviation
+     *
+     * @return Node
+     */
+    private function initializeParent(string &$abbreviation): Node
+    {
+        $firstNode = new Node($this->parser->shift($abbreviation));
+        $this->tree = Node::parent();
+        $this->tree->appendChild($firstNode);
+
+        return $firstNode;
+    }
+
+    /**
      * @param string $aggregator
      *
-     * @return BuilderInterface
+     * @return ChainableBuilderInterface
      */
-    private function getBuilder(string $aggregator): BuilderInterface
+    private function getBuilder(string $aggregator): ChainableBuilderInterface
     {
         if (!array_key_exists($aggregator, $this->builders)) {
             throw new \LogicException(sprintf('Resolver for aggregator "%s" does not exist.', $aggregator));

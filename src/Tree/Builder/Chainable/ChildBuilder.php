@@ -2,18 +2,18 @@
 
 namespace PHPEmmet\Tree\Builder\Chainable;
 
-use PHPEmmet\Tree\Builder\BuilderInterface;
+use PHPEmmet\Tree\Builder\ChainableBuilderInterface;
 use PHPEmmet\Tree\Node;
 
 /**
- * Class ChildHydrator.
+ * Class ChildBuilder.
  */
-final class ChildBuilder implements BuilderInterface
+final class ChildBuilder implements ChainableBuilderInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function build(string $elementAbbreviation, Node $parent): Node
+    public function build(string $elementAbbreviation, ?Node $parent): Node
     {
         $node = new Node($elementAbbreviation);
         $parent->appendChild($node);

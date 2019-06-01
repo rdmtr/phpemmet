@@ -256,7 +256,7 @@ final class Node
     /**
      * @return Node
      */
-    public function deepCopy(): Node //TODO refactor to __clone method
+    public function deepCopy(): Node
     {
         $copy = clone $this;
         $copy->children = [];

@@ -2,18 +2,18 @@
 
 namespace PHPEmmet\Tree\Builder\Chainable;
 
-use PHPEmmet\Tree\Builder\BuilderInterface;
+use PHPEmmet\Tree\Builder\ChainableBuilderInterface;
 use PHPEmmet\Tree\Node;
 
 /**
  * Class MultiplicationBuilder
  */
-final class MultiplicationBuilder implements BuilderInterface
+final class MultiplicationBuilder implements ChainableBuilderInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function build(string $elementAbbreviation, Node $parent): Node
+    public function build(string $elementAbbreviation, ?Node $parent): Node
     {
         $multiplicationCount = $elementAbbreviation;
 

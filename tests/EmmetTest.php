@@ -119,9 +119,6 @@ class EmmetTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->emmet = new Emmet(
-            new Builder(new GroupsParser(), ChainableBuilder::default()),
-            new Transformer(new NodeTransformer())
-        );
+        $this->emmet = Emmet::new();
     }
 }

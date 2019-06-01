@@ -10,7 +10,7 @@ final class DOM
     /**
      * @param \DOMDocument $document
      * @param string       $nodeName
-     * @param array        $attributes // TODO add text
+     * @param array        $attributes
      *
      * @return \DOMElement
      */

@@ -6,9 +6,9 @@ use PHPEmmet\Abbreviation\GroupsParser;
 use PHPEmmet\Tree\Node;
 
 /**
- * Class BranchBuilder
+ * Class Builder
  */
-final class Builder implements BuilderInterface
+final class Builder
 {
     /**
      * @var GroupsParser
@@ -16,17 +16,17 @@ final class Builder implements BuilderInterface
     private $groupsParser;
 
     /**
-     * @var BuilderInterface
+     * @var ChainableBuilderInterface
      */
     private $chainableBuilder;
 
     /**
      * BranchBuilder constructor.
      *
-     * @param GroupsParser     $groupsParser
-     * @param BuilderInterface $chainableBuilder
+     * @param GroupsParser              $groupsParser
+     * @param ChainableBuilderInterface $chainableBuilder
      */
-    public function __construct(GroupsParser $groupsParser, BuilderInterface $chainableBuilder)
+    public function __construct(GroupsParser $groupsParser, ChainableBuilderInterface $chainableBuilder)
     {
         $this->groupsParser = $groupsParser;
         $this->chainableBuilder = $chainableBuilder;
@@ -34,11 +34,10 @@ final class Builder implements BuilderInterface
 
     /**
      * @param string $elementAbbreviation
-     * @param Node   $parent
      *
      * @return Node
      */
-    public function build(string $elementAbbreviation, Node $parent = null): Node
+    public function build(string $elementAbbreviation): Node
     {
         $groups = $this->groupsParser->abbreviation($elementAbbreviation)->parseGroups();
         $tree = $this->chainableBuilder->build($elementAbbreviation, null);
@@ -87,7 +86,7 @@ final class Builder implements BuilderInterface
      * @param Node $groupNode Node which must be replaced with children of $tree
      * @param Node $tree
      */
-    private function replaceWithGroup(Node $groupNode, Node $tree)
+    private function replaceWithGroup(Node $groupNode, Node $tree): void
     {
         // there are 2 type of replacing
         // 1) a + b when all children go to each of sibling

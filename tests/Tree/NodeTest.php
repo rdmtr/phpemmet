@@ -32,7 +32,7 @@ class NodeTest extends TestCase
         $node = new Node('a');
         $node->appendChild($b = new Node('b'));
         $node->appendChild($c = new Node('c'));
-        $node->appendChild($b = new Node('d'));
+        $node->appendChild($d = new Node('d'));
 
         $this->assertCount(3, $node->getChildren());
 
@@ -41,5 +41,18 @@ class NodeTest extends TestCase
         $this->assertCount(4, $node->getChildren());
         $this->assertEquals('afterC', $node->getChildren()[2]->getName());
         $this->assertEquals('d', $node->getChildren()[3]->getName());
+    }
+
+    /**
+     * Test get max nesting level
+     */
+    public function testGetMaxLevel()
+    {
+        $node = new Node('a');
+        $node->appendChild($b = new Node('b'));
+        $b->appendChild($c = new Node('c'));
+        $c->appendChild($d = new Node('d'));
+
+        $this->assertEquals(3, $node->getMaxLevel());
     }
 }
