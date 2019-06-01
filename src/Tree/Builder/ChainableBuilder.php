@@ -62,6 +62,10 @@ final class ChainableBuilder implements ChainableBuilderInterface
     {
         $parent = $parent ?? $this->initializeParent($abbreviation);
 
+        if ('' === $abbreviation) {
+            return $parent->getParentNode()->deepCopy();
+        }
+
         $aggregator = $this->parser->shiftChar($abbreviation);
         $elementAbbreviation = $this->parser->shift($abbreviation);
 

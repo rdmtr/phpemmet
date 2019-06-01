@@ -2,12 +2,7 @@
 
 namespace PHPEmmet\Tests;
 
-use PHPEmmet\Abbreviation\GroupsParser;
 use PHPEmmet\Emmet;
-use PHPEmmet\Tree\Builder\Builder;
-use PHPEmmet\Tree\Builder\ChainableBuilder;
-use PHPEmmet\Tree\Transformer\NodeTransformer;
-use PHPEmmet\Tree\Transformer\Transformer;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -55,6 +50,7 @@ class EmmetTest extends TestCase
      */
     public function emmetProvider(): \Generator
     {
+        yield ['<div></div>', 'div'];
         yield ['<div><header><p></p></header></div>', 'div>header>p'];
         yield ['<div><header></header><footer><div></div></footer></div>', 'div>header+footer>div'];
         yield [
